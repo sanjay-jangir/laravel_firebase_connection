@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FirebaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+// Route::resource('fire-base', [FirebaseController::class]);
+Route::get('fire-base', [FirebaseController::class, 'index']);
+Route::get('insert',function(){
+    $data = app('firebase.firestore')
+    ->database()
+    ->collection('activities')
+    ->documents();
+
+    if ($data->isEmpty()) {
+     return collect();
+    }
+
+    $activities = collect($data->rows());
+    dd($activities);
 });
